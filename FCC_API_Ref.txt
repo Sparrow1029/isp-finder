@@ -1,0 +1,97 @@
+Original Idea:
+https://blog.mapbox.com/the-net-neutrality-map-how-i-built-it-c387c9cb64a8
+
+-- LINKS to Documentation -- ## Get FIPS Block code from Lat Lon ##
+https://geo.fcc.gov/api/census/#!/block/get_block_find
+
+	## Get provider info from blockcode ##
+	https://opendata.fcc.gov/Wireline/Fixed-Broadband-Deployment-Data-December-2016-Stat/b5f4-szwq
+
+	* Below doc page kills browser? *
+		https://dev.socrata.com/foundry/opendata.fcc.gov/b5f4-szwq
+
+
+-- API URLs -- ## Get provider info for blockcode area ##
+https://opendata.fcc.gov/resource/b5f4-szwq.json?blockcode={}
+
+	## Get blockcode from Lat/Lon coordinates ##
+	https://geo.fcc.gov/api/census/block/find?format=json&latitude=39.613321&longitude=%20-105.01665&showall=true
+	Notes:
+			- lat, lon *required
+			- censusYear (defaults to 2010)
+			- showall=True for if the coordinate lies on the boundary of multiple
+				geographies, gives complete provider list
+			- format: xml(default), json, jsonp
+
+	## Explanation of FCC fixed data (returned via JSON from blockcode query) ##
+	https://www.fcc.gov/general/explanation-broadband-deployment-data
+
+		-- Copied here for quick reference -- LogRecNo: A logical record number
+		created to relate the broadband deployment tables to the Imputations Table
+
+		Provider_Id: filing number (assigned by FCC)
+
+		FRN: FCC registration number
+
+		ProviderName: Provider name
+
+		DBAName: "Doing business as" name
+
+		HoldingCompanyName: Holding company name (as filed on Form 477)
+
+		HocoNum: Holding company number (assigned by FCC)
+
+		HocoFinal: Holding company name (attribution by FCC)
+
+		StateAbbr: 2-letter state abbreviation used by the US Postal Service
+
+		BlockCode: 15-digit census block code used in the 2010 US Census
+
+		TechCode: **SEE BELOW 2-digit code indicating the Technology of Transmission
+		used to offer broadband service
+
+		Consumer: (0/1) where 1 = Provider can or does offer consumer/mass
+		market/residential service in the block
+
+		MaxAdDown: Maximum advertised downstream speed/bandwidth offered by the
+		provider in the block for Consumer service
+
+		MaxAdUp: Maximum advertised upstream speed/bandwidth offered by the provider
+		in the block for Consumer service
+
+		Business: (0/1) where 1 = Provider can or does offer business/government
+		service in the block
+
+		MaxCIRDown: Maximum contractual downstream bandwidth offered by the provider
+		in the block for Business service (filer directed to report 0 if the
+		contracted service is sold on a "best efforts" basis without a guaranteed
+		data-throughput rate)
+
+		MaxCIRUp: Maximum contractual upstream bandwidth offered by the provider in
+		the block for Business service (filer directed to report 0 if the contracted
+		service is sold on a "best efforts" basis without a guaranteed
+		data-throughput rate)
+
+** TECHCODES (from above) Code 	Technology of Transmission
+----------------------------------- 
+10	Asymmetric xDSL 
+11	ADSL2, ADSL2+ 
+12	VDSL 
+20	Symmetric xDSL*
+30	Other Copper Wireline (all copper-wire based technologies other than xDSL;
+		Ethernet over copper and T-1 are examples)
+40	Cable Modem other than DOCSIS 1, 1.1, 2.0, 3.0, or 3.1
+41	Cable Modem – DOCSIS 1, 1.1 or 2.0
+42	Cable Modem – DOCSIS 3.0
+43	Cable Modem – DOCSIS 3.1
+50	Optical Carrier / Fiber to the end user (Fiber to the home or business 
+		end user, does not include “fiber to the curb”)
+60	Satellite
+70	Terrestrial Fixed Wireless
+90	Electric Power Line
+0 	All Other
+
+*Symmetric xDSL is a set of technologies distinct from Asymmetric xDSL
+technologies. Symmetric xDSL services are designed to operate only with equal
+downstream and upstream information transfer rate. They are not typically
+marketed to residential end users.
