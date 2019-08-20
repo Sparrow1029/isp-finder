@@ -25,23 +25,3 @@ async function fetchIspData(blockcode) {
 }
 
 export { fetchBlockcode, fetchIspData };
-
-// export default fetchFccData = async ({ lat, lon }) => axios
-// .get(`${BLOCK_URL}latitude=${lat}&longitude=${lon}`)
-// .then((response) => {
-//   axios.get(`${ISP_URL}blockcode=${response.data.Block.FIPS}`);
-// });
-
-// const fetchFccData = async ({ lat, lon }) => {
-//   const blockcode = await axios.get(`${BLOCK_URL}latitude=${lat}&longitude=${lon}`);
-//   const ispData = await axios.get(`${ISP_URL}blockcode=${blockcode.data.Block.FIPS}`);
-//
-//   return ispData;
-// };
-
-// export default fetchFccData;
-
-// Notes
-// useEffect with no 2nd arg    -> run every update
-// useEffect with []            -> eq to componentDidMount
-// useEffect with [dif values]  -> componentDidUpdate with check
