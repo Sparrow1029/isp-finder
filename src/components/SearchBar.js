@@ -3,17 +3,17 @@ import React from 'react';
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { location: props.location };
+
+    this.state = { search: '' };
   }
 
   onInputChange = (event) => {
-    this.setState({ location: event.target.value });
+    this.setState({ search: event.target.value });
   };
 
   onFormSubmit = (event) => {
     event.preventDefault();
-
-    this.props.onFormSubmit(this.state.location);
+    this.props.onFormSubmit(this.state.search);
   };
 
   render() {
@@ -28,7 +28,7 @@ class SearchBar extends React.Component {
             <label>ISP Finder</label>
             <input
               type="text"
-              value={this.state.location}
+              value={this.state.search}
               onChange={this.onInputChange}
             />
           </div>
