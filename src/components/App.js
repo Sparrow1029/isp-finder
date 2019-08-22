@@ -1,44 +1,44 @@
 import React from 'react';
-import { fetchBlockcode, fetchIspData } from '../apis/fcc';
-import nominatim from '../apis/nominatim';
+import searchAddress from '../apis/searchAddress';
 
 import IspTable from './IspTable';
 import SearchBar from './SearchBar';
+import ErrorMessage from './ErrorMessage';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { curAddress: '', ispData: [] };
+    this.state = { curAddress: 'Apple, Inc', ispData: [], error: null };
 
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.onSearchSubmit('Apple, Inc');
+    this.onSearchSubmit(this.state.curAddress);
   }
 
   async onSearchSubmit(address) {
-    const nominatimRes = await nominatim.get('', {
-      params: {
-        q: address,
-        format: 'json',
-        countrycodes: 'us',
-        limit: 1,
-      },
+    const result = await searchAddress(address).catch(() => this.setState({ error: 'No Results.' }));
+    if (!result) {
+      this.setState({ error: 'No Results.' });
+      return;
+    }
+    this.setState({
+      error: null,
+      curAddress: result.address,
+      ispData: result.ispData,
     });
-    const blockcode = await fetchBlockcode({
-      lat: nominatimRes.data[0].lat,
-      lon: nominatimRes.data[0].lon,
-    });
-    const ispDataRes = await fetchIspData(blockcode.data.Block.FIPS);
-
-    this.setState({ curAddress: nominatimRes.data[0].display_name, ispData: ispDataRes.data });
+    return null;
   }
 
   render() {
     return (
       <div className="ui container">
-        <SearchBar onFormSubmit={this.onSearchSubmit} />
+        <SearchBar
+          value={this.state.curAddress}
+          onFormSubmit={this.onSearchSubmit}
+        />
+        <ErrorMessage error={this.state.error} />
         <h4 className="sub header">
           Results for:&nbsp;&nbsp;
           <div className="ui ignored info message">

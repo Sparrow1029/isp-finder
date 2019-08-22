@@ -4,7 +4,7 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { search: '' };
+    this.state = { search: this.props.value };
   }
 
   onInputChange = (event) => {
@@ -25,11 +25,11 @@ class SearchBar extends React.Component {
           className="ui form"
         >
           <div className="field">
-            <label>ISP Finder</label>
+            <label htmlFor="input">ISP Finder</label>
             <input
               type="text"
               value={this.state.search}
-              onChange={this.onInputChange}
+              onChange={(value) => this.onInputChange(value)}
             />
           </div>
         </form>

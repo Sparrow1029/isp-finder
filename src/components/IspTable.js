@@ -2,7 +2,13 @@ import React from 'react';
 import IspTableRow from './IspTableRow';
 
 const IspTable = ({ ispData }) => {
-  const renderedRows = ispData.map((entry) => <IspTableRow entry={entry} />);
+  
+  const renderedRows = ispData.map((entry) => (
+    <IspTableRow
+      entry={entry}
+      key={entry.logrecno}
+    />
+  ));
 
   return (
     <div>

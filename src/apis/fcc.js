@@ -4,24 +4,13 @@ const BLOCK_URL = 'https://geo.fcc.gov/api/census/block/find?format=json&showall
 const ISP_URL = 'https://opendata.fcc.gov/resource/b5f4-szwq.json?';
 
 async function fetchBlockcode({ lat, lon }) {
-  try {
-    const response = await axios.get(`${BLOCK_URL}latitude=${lat}&longitude=${lon}`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-  return null;
+  const response = await axios.get(`${BLOCK_URL}latitude=${lat}&longitude=${lon}`);
+  return response;
 }
 
 async function fetchIspData(blockcode) {
-  try {
-    const response = await axios.get(`${ISP_URL}blockcode=${blockcode}`);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-
-  return null;
+  const response = await axios.get(`${ISP_URL}blockcode=${blockcode}`);
+  return response;
 }
 
 export { fetchBlockcode, fetchIspData };
